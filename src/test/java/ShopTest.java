@@ -6,13 +6,9 @@ import Instruments.Strings.Guitar;
 import Instruments.Woodwind.Flute;
 import NonInstruments.MusicStand;
 import NonInstruments.Plectrum;
-import Shop.ISell;
 import Shop.Shop;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -61,5 +57,40 @@ public class ShopTest {
     @Test
     public void canCalculateTotalProfit(){
         assertEquals(62650 , shop.CalculateOverAllProfit(), 0.01);
+    }
+
+    @Test
+    public void canGetSellPriceOfNonInstrumentProductFromStock(){
+        assertEquals(1.50, shop.sellPriceOfProduct(plectrum), 0.01);
+    }
+
+    @Test
+    public void canGetSellPriceOfInstrumentProductFromStock(){
+        assertEquals(500, shop.sellPriceOfProduct(drum),0.01);
+    }
+
+    @Test
+    public void canGetQuantityOfItemFromStock(){
+        assertEquals(2, shop.quantityOfProductInStock(musicStand));
+        assertEquals(10, shop.quantityOfProductInStock(flute));
+    }
+
+    @Test
+    public void canSellProductInStock(){
+        assertEquals("Item sold", shop.sellProduct(trumpet));
+        assertEquals("Item sold", shop.sellProduct(musicStand));
+    }
+
+    @Test
+    public void cannotSellProductOutOfStock(){
+        shop.sellProduct(musicStand);
+        shop.sellProduct(musicStand);
+        shop.sellProduct(trumpet);
+        shop.sellProduct(trumpet);
+        shop.sellProduct(trumpet);
+        shop.sellProduct(trumpet);
+        shop.sellProduct(trumpet);
+        assertEquals("Sorry this item is out of Stock.", shop.sellProduct(trumpet));
+        assertEquals("Sorry this item is out of Stock.", shop.sellProduct(musicStand));
     }
 }
